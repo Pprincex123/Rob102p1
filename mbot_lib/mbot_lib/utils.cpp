@@ -10,19 +10,27 @@
 std::vector<float> rayConversionCartesian(float dist, float angle) 
 {
     // *** Task: Implement this function according to the header file *** //
-
-    return std::vector<float>();
-
+float x = dist * std::cos(angle);
+float y = dist * std::sin(angle);
+float z = 0.0f;
+std::vector<float> result;
+result.push_back(x);
+result.push_back(y);
+result.push_back(z);
+return result;
     // *** End student code *** //
 }
 
 std::vector<float> rayConversionVector(float angle) 
 {
-    // *** Task: Implement this function according to the header file *** //
-
-    return std::vector<float>();
-
-    // *** End student code *** //
+float x = std::cos(angle);
+float y = std::sin(angle);
+float z = 0.0f;
+std::vector<float> result;
+result.push_back(x);
+result.push_back(y);
+result.push_back(z);
+return result;
 }
 
 int findMinDist(const std::vector<float>& ranges)
