@@ -50,7 +50,8 @@ int main(int argc, const char *argv[])
         // Get the distance to the wall.
         float dist_to_wall = findFwdDist(ranges, thetas);
         if (dist_to_wall < 0) continue;
-
+float control = bangBangControl(dist_to_wall, setpoint, 0.3, 0.05);
+robot.drive(control, 0.0f, 0.0f);
         // *** Task 2: Implement the Follow Me controller *** //
 
         // *** End Student Code *** //

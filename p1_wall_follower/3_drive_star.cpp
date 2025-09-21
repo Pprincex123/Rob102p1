@@ -40,9 +40,9 @@ double radian4 = degree4 *(M_PI/180);
 double degree5 = 144.0;
 double radian5 = degree5 *(M_PI/180);
 
-std::vector<float> radians = {radian1, radian2, radian3, radian4, radian5};
+std::vector<double> radians = {radian1, radian2, radian3, radian4, radian5};
 for (int i = 0; i < radians.size(); i++) {
-    std::vector<float> ray = rayConversionVector(radians[i]);
+    std::vector<double> ray = rayConversionVector(radians[i]);
     robot.drive(ray[0], ray[1], ray[2]);
     sleepfor(2);
 }
