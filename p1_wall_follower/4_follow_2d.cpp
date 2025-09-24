@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include <signal.h>
-
+#include <vector>
 #include <mbot_bridge/robot.h>
 
 #include <mbot_lib/controllers.h>
@@ -51,12 +51,18 @@ int main(int argc, const char *argv[])
         float min_idx = findMinNonzeroDist(ranges);
         float dist_to_wall = ranges[min_idx];
         float angle_to_wall = thetas[min_idx];
+        
 
         // *** Task 2: Implement the 2D Follow Me controller ***
         // Hint: Look at your code from follow_1D
         // Hint: When you compute the velocity command, you might find the functions
         // rayConversionVector helpful!
-
+std::vector<float>vel<<rayConversionVector(thetas);
+float vx = vel[0];
+float vy = vel[1];
+vx = pControl(dist_to_user, setpoint, 0.5f); // forward/back
+vy = pControl(0.0f, y, 0.5f); 
+robot.drive(vx, vy, 0.0f);
         // *** End Student Code ***
 
         if (ctrl_c_pressed) break;

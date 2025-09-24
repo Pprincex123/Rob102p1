@@ -36,20 +36,38 @@ return result;
 int findMinDist(const std::vector<float>& ranges)
 {
     // *** Task: Implement this function according to the header file *** //
-
-    return -1;
-
+    if (ranges.empty()) return -1;
+    float minVal = ranges[0];
+    int minIndex = 0;
+    for (int i = 1; i < ranges.size(); i++) {
+        float val = ranges[i];
+        if (val < minVal) {
+            minVal = val;
+            minIndex = i;
+        }
+    }
+    return minIndex;
     // *** End student code *** //
 }
 
 int findMinNonzeroDist(const std::vector<float>& ranges)
 {
     // *** Task: Implement this function according to the header file *** //
+if (ranges.empty()) return -1;
+    float minVal = ranges[0];
+    int minIndex = 0;
+    for (int i = 1; i < ranges.size(); i++) {
+        float val = ranges[i];
+        if (val < minVal && val > 0.00f) {
+            minVal = val;
+            minIndex = i;
+        }
+    }
+    return minIndex;
+    }
 
-    return -1;
     
     // *** End student code *** //
-}
 
 std::vector<float> vectorAdd(const std::vector<float>& v1, const std::vector<float>& v2) 
 {
