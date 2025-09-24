@@ -57,12 +57,21 @@ int main(int argc, const char *argv[])
         // Hint: Look at your code from follow_1D
         // Hint: When you compute the velocity command, you might find the functions
         // rayConversionVector helpful!
-std::vector<float>vel<<rayConversionVector(thetas);
-float vx = vel[0];
-float vy = vel[1];
-vx = pControl(dist_to_user, setpoint, 0.5f); // forward/back
-vy = pControl(0.0f, y, 0.5f); 
+// Get ray direction for the closest wall
+std::vector<float> vel = rayConversionVector(angle_to_wall);
+
+// Extract components
+float vx_dir = vel[0];
+float vy_dir = vel[1];
+
+// Use P control for distance error (forward/back)
+float error = dist_to_wall - setpoint;   // positive if too far
+float vx = pControl(dist_to_wall, setpoint, 0.5f) * vx_dir;
+float vy = pControl(dist_to_wall, setpoint, 0.5f) * vy_dir;
+
+// Drive command
 robot.drive(vx, vy, 0.0f);
+
         // *** End Student Code ***
 
         if (ctrl_c_pressed) break;

@@ -10,8 +10,16 @@
 std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
     // *** Task: Implement this function according to the header file *** //
-    
-    return std::vector<float>();
+    float setpoint = 1.00f;
+int MinIndex = findMinNonzeroDist(ranges);
+float MinDist = ranges[MinIndex];
+float Angle = thetas[MinIndex];
+float correction = pControl(MinDist, setpoint, 0.5);
+std::vector<float>direction = rayConversionVector(Angle);
+float vx = correction * direction[0];
+float vy = correction * direction[1];
+float wtheta = 0;
+return {vx, vy, wtheta};
 
     // *** End student code *** //
 }
