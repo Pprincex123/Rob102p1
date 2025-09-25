@@ -65,7 +65,6 @@ float vx_dir = vel[0];
 float vy_dir = vel[1];
 
 // Use P control for distance error (forward/back)
-float error = dist_to_wall - setpoint;   // positive if too far
 float vx = pControl(dist_to_wall, setpoint, 0.5f) * vx_dir;
 float vy = pControl(dist_to_wall, setpoint, 0.5f) * vy_dir;
 

@@ -12,11 +12,9 @@ std::vector<float> rayConversionCartesian(float dist, float angle)
     // *** Task: Implement this function according to the header file *** //
 float x = dist * std::cos(angle);
 float y = dist * std::sin(angle);
-float z = 0.0f;
 std::vector<float> result;
 result.push_back(x);
 result.push_back(y);
-result.push_back(z);
 return result;
     // *** End student code *** //
 }
@@ -90,7 +88,7 @@ std::vector<float> crossProduct(const std::vector<float>& v1, const std::vector<
     // *** Task: Implement this function according to the header file *** //
 std::vector<float>result(3);
 result[0] = v1[1]*v2[2]-v1[2]*v2[1];
-result[1] = v1[2]*v2[0]-v1[0]*v2[1];
+result[1] = v1[2]*v2[0]-v1[0]*v2[2];
 result[2] = v1[0]*v2[1]-v1[1]*v2[0];
     return result;
 

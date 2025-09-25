@@ -18,7 +18,7 @@ else if (error < -tolerance) {
 return -scaling;
 }
 else {
-    return -1;
+    return 0.0f;
 }
 }
 
