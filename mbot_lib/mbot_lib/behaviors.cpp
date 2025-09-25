@@ -14,7 +14,7 @@ std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, 
 int MinIndex = findMinNonzeroDist(ranges);
 float MinDist = ranges[MinIndex];
 float Angle = thetas[MinIndex];
-float correction = pControl(MinDist, setpoint, 0.5);
+float correction = pControl(MinDist, setpoint, -0.5);
 std::vector<float>direction = rayConversionVector(Angle);
 float vx = correction * direction[0];
 float vy = correction * direction[1];

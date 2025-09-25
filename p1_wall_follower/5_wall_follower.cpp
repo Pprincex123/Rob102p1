@@ -36,13 +36,14 @@ int main(int argc, const char *argv[])
 
    while (true) {
     // 1. Get nearest wall info
+ robot.readLidarScan(ranges, thetas);
     int min_idx = findMinNonzeroDist(ranges);
     float dist_to_wall = ranges[min_idx];
     float angle_to_wall = thetas[min_idx];
 
     // 2. Build a vector pointing toward the wall
-    std::vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
 
+    std::vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
     // 3. Build a vertical axis vector (z-axis)
     std::vector<float> v_up = {0.0f, 0.0f, 1.0f};
 
@@ -57,12 +58,14 @@ int main(int argc, const char *argv[])
 
     // 7. Send to robot
     robot.drive(finalDrive[0], finalDrive[1], finalDrive[2]);
+     if (ctrl_c_pressed) break;
+            // Stop the robot.
 }
 
-        if (ctrl_c_pressed) break;
-    }
-
-    // Stop the robot.
+     
     robot.stop();
     return 0;
+    }
+
+
 

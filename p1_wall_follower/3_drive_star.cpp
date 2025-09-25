@@ -39,12 +39,14 @@ double degree4 = -72.0;
 double radian4 = degree4 *(M_PI/180);
 double degree5 = 144.0;
 double radian5 = degree5 *(M_PI/180);
-
-std::vector<double> radians = {radian1, radian2, radian3, radian4, radian5}; //vector of radian values
+float control = 0.5;
+std::vector<double>radians = {radian1, radian2, radian3, radian4, radian5}; //vector of radian values
 for (int i = 0; i < radians.size(); i++) { //for loop for every movement of the star
-    std::vector<double> ray = rayConversionVector(radians[i]); 
-    robot.drive(ray[0], ray[1], ray[2]);
-    sleepfor(1); // time to move before the next ray
+    std::vector<float>ray = rayConversionVector(radians[i]); 
+ float vx= ray[0] * control;
+ float vy = ray[1] * control;
+    robot.drive(vx, vy, ray[2]);
+    sleepFor(2); // time to move before the next ray
 }
 
     // *** End student code *** //
