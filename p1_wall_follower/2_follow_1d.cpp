@@ -39,9 +39,9 @@ int main(int argc, const char *argv[])
 
     // *** Task 1: Adjust these values appropriately ***
 
-    float setpoint = 1.0;  // The goal distance from the wall in meters
+    float setpoint = 0.5;  // The goal distance from the wall in meters
 
-    // *** End student code *** //
+    // *** End student code *** /
 
     while (true) {
         // This function gets the Lidar scan data.
@@ -49,8 +49,10 @@ int main(int argc, const char *argv[])
 
         // Get the distance to the wall.
         float dist_to_wall = findFwdDist(ranges, thetas);
+        float scaling = 0.3;
+        float tolerance = 0.05;
         if (dist_to_wall < 0) continue;
-float control = bangBangControl(dist_to_wall, setpoint, 0.3, 0.05);
+float control = bangBangControl(dist_to_wall, setpoint, -1* scaling, tolerance);
 robot.drive(control, 0.0f, 0.0f);
         // *** Task 2: Implement the Follow Me controller *** //
 

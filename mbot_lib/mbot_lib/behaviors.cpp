@@ -10,7 +10,7 @@
 std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
     // *** Task: Implement this function according to the header file *** //
-    float setpoint = 1.00f;
+    float setpoint = 0.5f;
 int MinIndex = findMinNonzeroDist(ranges);
 float MinDist = ranges[MinIndex];
 float Angle = thetas[MinIndex];
