@@ -63,7 +63,7 @@ int main(int argc, const char *argv[])
         // Extract components
         float vx_dir = vel[0];
         float vy_dir = vel[1];
-        float kp = -0.5;
+        float kp = 0.5;
 
         // Use P control for distance error (forward/back)
         float vx = pControl(dist_to_wall, setpoint, kp) * vx_dir;
