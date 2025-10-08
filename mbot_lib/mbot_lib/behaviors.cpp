@@ -27,8 +27,16 @@ return {vx, vy, wtheta};
 std::vector<float> computeDriveToPoseCommand(const std::vector<float>& goal, const std::vector<float>& pose)
 {   
     // *** Task: Implement this function according to the header file *** //
-
-    return std::vector<float>();
+    float dx = goal[0]-pose[0];
+    float dy = goal[1]-pose[1];
+    float dt = normalizeAngle(goal[2]-pose[2]);
+    float h = sqrt(pow(dx, 2) +pow(dy, 2));
+    float vx = 0.5*dx/h;
+    float vy = 0.5*dy/h;
+float vt = 0.5*dt;
+std::vector<float> vel = {vx, vy, vt};
+transformVector2D(vel, pose[2]);
+return vel;
 
     // *** End student code *** //
 }

@@ -46,7 +46,6 @@ int main(int argc, const char *argv[])
     while (true) {
         // This function gets the Lidar scan data.
         robot.readLidarScan(ranges, thetas);
-
         // Get the distance to the wall.
         float dist_to_wall = findFwdDist(ranges, thetas);
         if (dist_to_wall < 0) continue;

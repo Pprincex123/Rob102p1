@@ -98,6 +98,11 @@ result[2] = v1[0]*v2[1]-v1[1]*v2[0];
 void transformVector2D(std::vector<float>& xy, float theta) 
 {
     // *** Task: Implement this function according to the header file *** //
-
-    // *** End student code *** //
+float x = xy[0];
+float y =xy[1];
+float vx = x*cos(theta)+y*sin(theta);
+float vy = -x*sin(theta)+y*cos(theta);
+xy[0]=vx;
+xy[1]=vy;
+ // *** End student code *** //
 }
