@@ -45,5 +45,8 @@ std::vector<float> computeDriveToPoseCommand(const std::vector<float>& goal, con
  */
 bool isGoalAngleObstructed(const std::vector<float>& goal, const std::vector<float>& pose,
                            const std::vector<float>& ranges, const std::vector<float>& thetas);
+float dx = goal[0]-pose[0];
+float dy = goal[1]-pose[1];
+float dt = goal[2]-pose[2];
 
 #endif  // MBOT_LIB_BEHAVIORS_H

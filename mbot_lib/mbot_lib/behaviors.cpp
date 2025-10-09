@@ -40,13 +40,29 @@ return vel;
 
     // *** End student code *** //
 }
-
+/**
+ * Checks if the straight line path to a goal pose is obstructed such that another method of navigation must be used.
+ * @param  goal The goal pose of the robot in world frame.
+ * @param  pose The current pose of the robot in world frame, according to odometry. 
+ * @param  ranges Vector of ray ranges.
+ * @param  thetas Vector of ray angles.
+ * @return  True if the straight line path to the goal pose is obstructed, false otherwise.
+ *
+ * NOTE: This function is not unit tested, it is simply meant to help you structure your code.
+ */
 bool isGoalAngleObstructed(const std::vector<float>& goal, const std::vector<float>& pose,
                            const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
     // *** Task: Implement this function according to the header file *** //
-
-    return false;
+float setpoint = 0.5;
+float dx = goal[0]-pose[0];
+ float dy = goal[1]-pose[1];
+float target_angle = atan(dy/dx);
+float slice_size = M_PI/2;
+int minIndex = findMinNonzeroDistInSlice(ranges, thetas, target_angle, slice_size);
+if (ranges[minIndex] < setpoint){
+    return true;
+}
 
     // *** End student code *** //
 }
