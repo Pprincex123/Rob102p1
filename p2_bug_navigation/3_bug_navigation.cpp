@@ -1,9 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <signal.h>
-
 #include <mbot_bridge/robot.h>
-
 #include <mbot_lib/behaviors.h>
 #include <mbot_lib/controllers.h>
 #include <mbot_lib/utils.h>
@@ -45,28 +43,33 @@ goalPose.push_back(y);
     
     // NOTE: You may want to change the condition in this loop.
     while (true) {
-        robot.readLidarScan(ranges, thetas);
-        if (isGoalAngleObstructed){
-        float control =0.5;
-    int min_idx = findMinNonzeroDist(ranges);
-    float dist_to_wall = ranges[min_idx];
-    float angle_to_wall = thetas[min_idx];
-    std::vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
-    std::vector<float> v_up = {0.0f, 0.0f, 1.0f};
- std::vector<float> v_forward = crossProduct(v_up, v_to_wall);
-    std::vector<float> correction = computeWallFollowerCommand(ranges, thetas);
-    std::vector<float> finalDrive = vectorAdd(v_forward, correction);
-    float vx = finalDrive[0]*correction;
-    float vy = finalDrive[1]*correction;
-    robot.drive(vx,, vy, finalDrive[2]);
-robot.drive(DriveCommands[0], DriveCommands[1], DriveCommands[2]);
+       robot.readLidarScan(ranges, thetas);
+        odometry_pose = robot.readOdometry();
+
+        if (isGoalAngleObstructed(goalPose, odometry_pose, ranges, thetas)) {
+            int min_idx = findMinNonzeroDist(ranges);
+            float angle_to_wall = thetas[min_idx];
+            vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
+            vector<float> v_up = {0.0f, 0.0f, 1.0f};
+            vector<float> v_forward = crossProduct(v_up, v_to_wall);
+
+            vector<float> correction = computeWallFollowerCommand(ranges, thetas);
+            vector<float> finalDrive = vectorAdd(v_forward, correction);
+
+            robot.drive(finalDrive[0], finalDrive[1], finalDrive[2]);
+        } else {
+            vector<float> drive = computeDriveToPoseCommand(goalPose, odometry_pose);
+            robot.drive(drive[0], drive[1], drive[2]);
         }
-vector<float> odemetry_pose =robot.readOdometry();
-vector<float> drive = computeDriveToPoseCommand(goalPose, odemetry_pose);
-robot.drive(drive[0], drive[1], drive[2]);
+
+        float dx = goalPose[0] - odometry_pose[0];
+        float dy = goalPose[1] - odometry_pose[1];
+        float d = 0.05;
+        }
 dx =goalPose[0]-odemetry_pose[0];
 dy =goalPose[1]-odemetry_pose[1]
-if (dx <0.1 && dy < 0.1){
+float d = 0.005;
+if (dx < d && dy < d){
     break;
 }
         if(ctrl_c_pressed) break;
@@ -78,8 +81,9 @@ if (dx <0.1 && dy < 0.1){
     robot.stop();
 
     // *** Task: Print out the robot's final odometry pose *** //
+    cout << "final odemetry pose: "
     cout << Final_odometry_pose[0] << ", ";
     cout << Final_odometry_pose[1] << ", ";
     cout << Final_odometry_pose[2];
     // *** End student code *** //
-}
+
