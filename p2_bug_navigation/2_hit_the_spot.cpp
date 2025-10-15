@@ -40,12 +40,19 @@ goalPose.push_back(y);
         // *** Task: Implement hit the spot *** //
 vector<float> odemetry_pose =robot.readOdometry();
 vector<float> drive = computeDriveToPoseCommand(goalPose, odemetry_pose);
-robot.drive(drive[0], drive[1], drive[2]);
+float control =0.5;
+robot.drive(control*drive[0], control*drive[1], control*drive[2]);
 
         // *** End student code *** //
-        
+        float dx = goalPose[0] - odemetry_pose[0];
+        float dy = goalPose[1] - odemetry_pose[1];
+        float d = 0.1;
+        if (dx < d && dy < d){
+    break;
+        }
         if (ctrl_c_pressed) break;
     }
+        
 
     // Stop the robot before exiting.
     robot.stop();

@@ -54,11 +54,11 @@ bool isGoalAngleObstructed(const std::vector<float>& goal, const std::vector<flo
                            const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
     // *** Task: Implement this function according to the header file *** //
-float setpoint = 0.5;
+float setpoint = 0.25;
 float dx = goal[0]-pose[0];
  float dy = goal[1]-pose[1];
 float target_angle = atan(dy/dx);
-float slice_size = M_PI/2;
+float slice_size = M_PI/4;
 int minIndex = findMinNonzeroDistInSlice(ranges, thetas, target_angle, slice_size);
 if (ranges[minIndex] < setpoint){
     return true;
