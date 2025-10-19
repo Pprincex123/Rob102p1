@@ -11,6 +11,11 @@ std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, 
 {
     // *** Task: Implement this function according to the header file *** //
     float setpoint = 0.5f;
+      int min_idx = findMinNonzeroDist(ranges);
+            float angle_to_wall = thetas[min_idx];
+            vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
+            vector<float> v_up = {0.0f, 0.0f, 1.0f};
+            vector<float> v_forward = crossProduct(v_up, v_to_wall);
 int MinIndex = findMinNonzeroDist(ranges);
 float MinDist = ranges[MinIndex];
 float Angle = thetas[MinIndex];
