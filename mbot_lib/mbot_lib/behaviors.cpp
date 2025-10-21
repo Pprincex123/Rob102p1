@@ -6,7 +6,10 @@
 
 #include <mbot_lib/behaviors.h>
 #include <vector>
+<<<<<<< HEAD
 #include <iostream>
+=======
+>>>>>>> 4c290e50e525ffda0de80d18bbc37cbc63e5d1d2
 
 std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, const std::vector<float>& thetas)
 {

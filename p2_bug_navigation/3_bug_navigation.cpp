@@ -47,9 +47,14 @@ int main() {
         float control = 0.25;
 
         if (isGoalAngleObstructed(goalPose, odometry_pose, ranges, thetas)) {
+<<<<<<< HEAD
             cout << "i am obstructed\n";
             vector <float> v_forward = computeWallFollowerCommand(ranges, thetas);
             robot.drive(v_forward[0], v_forward[1], v_forward[2]);
+=======
+           vector <float> v_forward =computeWallFollowerCommand(ranges, thetas);
+            robot.drive(control*v_forward[0], control*v_forward[1], v_forward[2]);
+>>>>>>> 4c290e50e525ffda0de80d18bbc37cbc63e5d1d2
         } else {
             cout << "i am driving to pose\n";
             vector<float> drive = computeDriveToPoseCommand(goalPose, odometry_pose);
