@@ -47,12 +47,7 @@ int main() {
         float control = 0.25;
 
         if (isGoalAngleObstructed(goalPose, odometry_pose, ranges, thetas)) {
-            int min_idx = findMinNonzeroDist(ranges);
-            float angle_to_wall = thetas[min_idx];
-            vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
-            vector<float> v_up = {0.0f, 0.0f, 1.0f};
-            vector<float> v_forward = crossProduct(v_up, v_to_wall);
-
+           vector <float> v_forward =computeWallFollowerCommand(ranges, thetas);
             robot.drive(control*v_forward[0], control*v_forward[1], v_forward[2]);
         } else {
             vector<float> drive = computeDriveToPoseCommand(goalPose, odometry_pose);
