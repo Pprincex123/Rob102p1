@@ -5,24 +5,33 @@
  */
 
 #include <mbot_lib/behaviors.h>
-
+#include <vector>
+#include <iostream>
 
 std::vector<float> computeWallFollowerCommand(const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
-    // *** Task: Implement this function according to the header file *** //
-    float setpoint = 0.5f;
-int MinIndex = findMinNonzeroDist(ranges);
-float MinDist = ranges[MinIndex];
-float Angle = thetas[MinIndex];
-float correction = pControl(MinDist, setpoint, -0.5);
-std::vector<float>direction = rayConversionVector(Angle);
-float vx = correction * direction[0];
-float vy = correction * direction[1];
-float wtheta = 0;
-return {vx, vy, wtheta};
+    // --- Parameters ---
+    float setpoint = 0.5f;   // Desired distance from wall
+    // --- Step 1: Find the nearest wall direction ---
+    int MinIndex = findMinNonzeroDist(ranges);
+    float MinDist = ranges[MinIndex];
+    float Angle = thetas[MinIndex];
+    // --- Step 2: Compute distance correction using P-control ---
+    float correction_mag = pControl(MinDist, setpoint, -0.5f);
+    // --- Step 3: Compute direction vector toward the wall ---
+    std::vector<float> dir_to_wall = rayConversionVector(Angle); // unit vector toward wall
+    // --- Step 4: Turn that into a correction vector ---
+    std::vector<float> correction = { correction_mag * dir_to_wall[0], correction_mag * dir_to_wall[1], 0.0f };
+    // --- Step 5: Compute forward direction along wall ---
+    std::vector<float> v_to_wall = {cos(Angle), sin(Angle), 0.0f};
+    std::vector<float> v_up = {0.0f, 0.0f, 1.0f};
+    std::vector<float> v_forward = crossProduct(v_up, v_to_wall);
+    // --- Step 6: Combine forward drive and wall correction ---
+    std::vector<float> finalDrive = vectorAdd(v_forward, correction);
 
-    // *** End student code *** //
+    return finalDrive;
 }
+
 
 std::vector<float> computeDriveToPoseCommand(const std::vector<float>& goal, const std::vector<float>& pose)
 {   
@@ -30,13 +39,20 @@ std::vector<float> computeDriveToPoseCommand(const std::vector<float>& goal, con
     float dx = goal[0]-pose[0];
     float dy = goal[1]-pose[1];
     float dt = normalizeAngle(goal[2]-pose[2]);
-    float h = sqrt(pow(dx, 2) +pow(dy, 2));
-    float vx = 0.5*dx/h;
-    float vy = 0.5*dy/h;
-float vt = 0.5*dt;
-std::vector<float> vel = {vx, vy, vt};
-transformVector2D(vel, pose[2]);
-return vel;
+
+    // std::cout << "angle: " << dt << "\n";
+
+    float h = sqrt(dx*dx + dy*dy);
+
+    float vx = 0.4 * dx/h;
+    float vy = 0.4 * dy/h;
+    float vt = 1.5 * dt;
+
+    if(sqrt(dt*dt) < M_PI/22) dt = 0;
+
+    std::vector<float> vel = {vx, vy, vt};
+    transformVector2D(vel, pose[2]);
+    return vel;
 
     // *** End student code *** //
 }
@@ -54,15 +70,16 @@ bool isGoalAngleObstructed(const std::vector<float>& goal, const std::vector<flo
                            const std::vector<float>& ranges, const std::vector<float>& thetas)
 {
     // *** Task: Implement this function according to the header file *** //
-float setpoint = 0.25;
-float dx = goal[0]-pose[0];
- float dy = goal[1]-pose[1];
-float target_angle = atan(dy/dx);
-float slice_size = M_PI/4;
-int minIndex = findMinNonzeroDistInSlice(ranges, thetas, target_angle, slice_size);
-if (ranges[minIndex] < setpoint){
-    return true;
-}
+    float setpoint = 0.25;
+    float dx = goal[0]-pose[0];
+    float dy = goal[1]-pose[1];
+
+    float TanAngle = atan(dy/dx);
+    float target_angle = normalizeAngle(TanAngle-pose[2]);
+    float slice_size = M_PI/2;
+
+    int minIndex = findMinNonzeroDistInSlice(ranges, thetas, target_angle, slice_size);
+    return ranges[minIndex] < setpoint;
 
     // *** End student code *** //
 }

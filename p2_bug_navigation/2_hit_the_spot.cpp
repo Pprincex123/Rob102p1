@@ -19,38 +19,45 @@ int main(){
 signal(SIGINT, ctrlc);
     // Initialize the robot.
     mbot_bridge::MBot robot;
+    
     // Reset the robot odometry to zero at the beginning of the run.
     robot.resetOdometry();
+    
     // *** Task: Get the goal pose (x, y, theta) from the user *** //
-  vector<float> goalPose;
-  float x;
-  float y;
-  float theta;
-  cout << "What is your x? ";
-  cin >> x;
-  goalPose.push_back(x);
-  cout << "What is your y? ";
-  cin >> y;
-goalPose.push_back(y);
-  cout << "What is your theta? ";
-  cin >> theta;
-  goalPose.push_back(theta);
+    vector<float> goalPose;
+    float x;
+    float y;
+    float theta;
+    
+    cout << "What is your x? ";
+    cin >> x;
+    goalPose.push_back(x);
+    
+    cout << "What is your y? ";
+    cin >> y;
+    goalPose.push_back(y);
+    
+    cout << "What is your theta? ";
+    cin >> theta;
+    goalPose.push_back(theta);
+    
     while (true) {
-        
-        // *** Task: Implement hit the spot *** //
-vector<float> odemetry_pose =robot.readOdometry();
-vector<float> drive = computeDriveToPoseCommand(goalPose, odemetry_pose);
-float control =0.5;
-robot.drive(control*drive[0], control*drive[1], control*drive[2]);
+          
+      // *** Task: Implement hit the spot *** //
+      vector<float> odemetry_pose =robot.readOdometry();
+      vector<float> drive = computeDriveToPoseCommand(goalPose, odemetry_pose);
+      float control =0.5;
+      robot.drive(drive[0], drive[1], drive[2]);
 
-        // *** End student code *** //
-        float dx = goalPose[0] - odemetry_pose[0];
-        float dy = goalPose[1] - odemetry_pose[1];
-        float d = 0.1;
-        if (dx < d && dy < d){
-    break;
-        }
-        if (ctrl_c_pressed) break;
+      // *** End student code *** //
+      float dx = goalPose[0] - odemetry_pose[0];
+      float dy = goalPose[1] - odemetry_pose[1];
+      float d = 0.1;
+      
+      if (dx < d && dy < d) break;
+      
+      if (ctrl_c_pressed) break;
+      
     }
         
 

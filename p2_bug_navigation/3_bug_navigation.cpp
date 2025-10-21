@@ -39,31 +39,28 @@ int main() {
     // *** End student code *** //
 
     // *** Task: Implement bug navigation finite state machine *** //
-    
+    vector<float> odometry_pose;
     // NOTE: You may want to change the condition in this loop.
     while (true) {
         robot.readLidarScan(ranges, thetas);
-        vector<float> odometry_pose = robot.readOdometry();
+        odometry_pose = robot.readOdometry();
         float control = 0.25;
 
         if (isGoalAngleObstructed(goalPose, odometry_pose, ranges, thetas)) {
-            int min_idx = findMinNonzeroDist(ranges);
-            float angle_to_wall = thetas[min_idx];
-            vector<float> v_to_wall = {cos(angle_to_wall), sin(angle_to_wall), 0.0f};
-            vector<float> v_up = {0.0f, 0.0f, 1.0f};
-            vector<float> v_forward = crossProduct(v_up, v_to_wall);
-
-            robot.drive(control*v_forward[0], control*v_forward[1], v_forward[2]);
+            cout << "i am obstructed\n";
+            vector <float> v_forward = computeWallFollowerCommand(ranges, thetas);
+            robot.drive(v_forward[0], v_forward[1], v_forward[2]);
         } else {
+            cout << "i am driving to pose\n";
             vector<float> drive = computeDriveToPoseCommand(goalPose, odometry_pose);
-            robot.drive(control*drive[0], control*drive[1], drive[2]);
+            robot.drive(drive[0], drive[1], drive[2]);
         }
 
         float dx = goalPose[0] - odometry_pose[0];
         float dy = goalPose[1] - odometry_pose[1];
+        float dt = goalPose[2] - odometry_pose[2];
         float d = 0.1;
-        cout << dx << "\n";
-        cout << dy;
+        cout << dx << " " << dy << " " << dt << "\n\n";
         if (dx < d && dy < d){
             break;
         }
